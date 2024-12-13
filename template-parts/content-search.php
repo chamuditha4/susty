@@ -23,7 +23,6 @@
 		<?php endif; ?>
 	</header>
 
-	<?php susty_wp_post_thumbnail(); ?>
 
 	<div>
 		<?php the_excerpt(); ?>
