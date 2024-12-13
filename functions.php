@@ -134,6 +134,38 @@ if ( defined( 'JETPACK__VERSION' ) ) {
 	require get_template_directory() . '/inc/jetpack.php';
 }
 
+/**
+ * Completely disable product images across WooCommerce
+ */
+function disable_woocommerce_product_images() {
+    // Remove product image from product archive/shop page
+    remove_action( 'woocommerce_before_shop_loop_item_title', 'woocommerce_template_loop_product_thumbnail', 10 );
+    
+    // Remove product image from single product page
+    remove_action( 'woocommerce_before_single_product_summary', 'woocommerce_show_product_images', 20 );
+    
+    // Remove product image in product list/cart
+    remove_action( 'woocommerce_before_shop_loop_item_title', 'woocommerce_template_loop_product_thumbnail', 10 );
+    
+    // Remove product image in related products
+    remove_action( 'woocommerce_before_single_product_summary', 'woocommerce_show_product_images', 20 );
+    
+    // Remove product image in admin quick view
+    remove_action( 'woocommerce_before_shop_loop_item_title', 'woocommerce_template_loop_product_thumbnail', 10 );
+    
+    // Remove product image in mini-cart
+    remove_filter( 'woocommerce_cart_item_thumbnail', 'woocommerce_cart_item_thumbnail', 10, 3 );
+}
+add_action( 'init', 'disable_woocommerce_product_images' );
+
+/**
+ * Optional: Add a filter to remove image URLs from product data
+ */
+function remove_product_image_urls( $image_src ) {
+    return ''; // Return empty string to remove image URLs
+}
+add_filter( 'woocommerce_placeholder_img_src', 'remove_product_image_urls' );
+
 remove_action( 'wp_head', 'print_emoji_detection_script', 7 );
 remove_action( 'wp_print_styles', 'print_emoji_styles' );
 
